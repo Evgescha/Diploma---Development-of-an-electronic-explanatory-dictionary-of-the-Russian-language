@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Dictionary</title>
+</head>
+<body>
+<h1>Edit Dictionary</h1>
+<h3 th:if="${message != null}" th:text="${message}">Message</h3>
+<form th:action="@{/dictionary}" th:object="${entity}" method="post">
+
+    <p>
+        <label for="dictionaryType">dictionaryType:</label>
+            <input type="text" th:field="*{dictionaryType}" id="dictionaryType" required>
+        </p>
+    <p>
+        <label for="words">words:</label>
+            <select multiple="multiple" th:field="*{words}" id="words">
+            <option th:each="words_item : ${words_list}" th:value="${words_item}" th:text="${words_item}"></option>
+        </select>
+        </p>
+
+    <p>
+        <input type="text" th:field="*{id}" id="id">
+        <input type="submit" value="Save">
+        <a th:href="@{/dictionary}">Cancel</a>
+    </p>
+</form>
+
+</body>
+</html>

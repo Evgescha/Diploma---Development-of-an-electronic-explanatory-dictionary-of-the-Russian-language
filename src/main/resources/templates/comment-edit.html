@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Comment</title>
+</head>
+<body>
+<h1>Edit Comment</h1>
+<h3 th:if="${message != null}" th:text="${message}">Message</h3>
+<form th:action="@{/comment}" th:object="${entity}" method="post">
+
+    <p>
+        <label for="authorName">authorName:</label>
+            <input type="text" th:field="*{authorName}" id="authorName" required>
+        </p>
+    <p>
+        <label for="message">message:</label>
+            <input type="text" th:field="*{message}" id="message" required>
+        </p>
+    <p>
+        <label for="word">word:</label>
+            <input type="text" th:field="*{word}" id="word" required>
+        </p>
+
+    <p>
+        <input type="text" th:field="*{id}" id="id">
+        <input type="submit" value="Save">
+        <a th:href="@{/comment}">Cancel</a>
+    </p>
+</form>
+
+</body>
+</html>
