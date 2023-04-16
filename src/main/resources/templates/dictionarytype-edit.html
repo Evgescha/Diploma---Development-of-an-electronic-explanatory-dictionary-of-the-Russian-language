@@ -1,25 +1,25 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Edit DictionaryType</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование типа словаря</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<h1>Edit DictionaryType</h1>
-<h3 th:if="${message != null}" th:text="${message}">Message</h3>
-<form th:action="@{/dictionaryType}" th:object="${entity}" method="post">
+<div th:replace="~{commons :: header}"></div>
+<section class="add-word-container search-container">
+    <h2>Добавить/Редактировать тип словаря</h2>
+    <h3 th:if="${message != null}" th:text="${message}">Сообщение</h3>
+    <form th:action="@{/dictionarytype}" th:object="${entity}" method="post">
+        <label for="name">Название типа словаря:</label>
+        <input type="text" th:field="*{name}" id="name" required>
 
-    <p>
-        <label for="name">name:</label>
-            <input type="text" th:field="*{name}" id="name" required>
-        </p>
-
-    <p>
-        <input type="text" th:field="*{id}" id="id">
-        <input type="submit" value="Save">
-        <a th:href="@{/dictionaryType}">Cancel</a>
-    </p>
-</form>
-
+        <input type="hidden" th:field="*{id}" id="id">
+        <button type="submit">Сохранить</button>
+        <a class="submit" th:href="@{/dictionarytype}">Отмена</a>
+    </form>
+</section>
+<div th:replace="~{commons :: footer}"></div>
 </body>
 </html>

@@ -1,10 +1,13 @@
 package com.hescha.rudictionary.service;
 
-import com.hescha.rudictionary.model.Dictionary;
+import com.hescha.rudictionary.model.Comment;
 import com.hescha.rudictionary.repository.*;
 import com.hescha.rudictionary.model.Word;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -12,9 +15,16 @@ public class WordService extends CrudService<Word> {
 
     private final WordRepository repository;
 
-    public WordService(WordRepository repository) {
+    private final CommentService commentService;
+    public WordService(WordRepository repository,
+                       CommentService commentService) {
         super(repository);
         this.repository = repository;
+        this.commentService = commentService;
+    }
+
+    public Page<Word> readAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     public List<Word> findByName(String name) {
@@ -22,7 +32,7 @@ public class WordService extends CrudService<Word> {
     }
 
     public List<Word> findByNameContains(String name) {
-        return repository.findByNameContains(name);
+        return repository.findByNameContaining(name);
     }
 
     public List<Word> findByDescription(String description) {
@@ -31,10 +41,6 @@ public class WordService extends CrudService<Word> {
 
     public List<Word> findByDescriptionContains(String description) {
         return repository.findByDescriptionContains(description);
-    }
-
-    public Word findByDictionary(Dictionary dictionary) {
-        return repository.findByDictionary(dictionary);
     }
 
     public List<Word> findByCommentsContains(com.hescha.rudictionary.model.Comment comments) {
@@ -49,13 +55,10 @@ public class WordService extends CrudService<Word> {
         }
         updateFields(entity, read);
         return update(read);
-
     }
 
     private void updateFields(Word entity, Word read) {
         read.setName(entity.getName());
         read.setDescription(entity.getDescription());
-        read.setDictionary(entity.getDictionary());
-        read.setComments(entity.getComments());
     }
 }

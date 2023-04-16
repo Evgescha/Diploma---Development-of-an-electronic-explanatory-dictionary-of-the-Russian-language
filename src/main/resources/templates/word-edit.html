@@ -2,38 +2,35 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Word</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление/Редактирование слова</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<h1>Edit Word</h1>
-<h3 th:if="${message != null}" th:text="${message}">Message</h3>
-<form th:action="@{/word}" th:object="${entity}" method="post">
+<div th:replace="~{commons :: header}"></div>
+<section>
+    <div class="add-word-container">
+        <h1>Добавление/Редактирование слова</h1>
+        <form th:action="@{/word}" th:object="${entity}" method="post">
+            <input type="hidden" th:field="*{id}">
 
-    <p>
-        <label for="name">name:</label>
+            <label for="name">Слово:</label>
             <input type="text" th:field="*{name}" id="name" required>
-        </p>
-    <p>
-        <label for="description">description:</label>
-            <input type="text" th:field="*{description}" id="description" required>
-        </p>
-    <p>
-        <label for="dictionary">dictionary:</label>
-            <input type="text" th:field="*{dictionary}" id="dictionary" required>
-        </p>
-    <p>
-        <label for="comments">comments:</label>
-            <select multiple="multiple" th:field="*{comments}" id="comments">
-            <option th:each="comments_item : ${comments_list}" th:value="${comments_item}" th:text="${comments_item}"></option>
-        </select>
-        </p>
 
-    <p>
-        <input type="text" th:field="*{id}" id="id">
-        <input type="submit" value="Save">
-        <a th:href="@{/word}">Cancel</a>
-    </p>
-</form>
+            <label for="description">Описание:</label>
+            <textarea th:field="*{description}" id="description" rows="5" required></textarea>
 
+            <label for="dictionary">Тип словаря:</label>
+            <select th:field="*{dictionaryType}" id="dictionary">
+                <option th:each="dictionary : ${dictionary_list}"
+                        th:value="${dictionary.id}"
+                        th:text="${dictionary.name}"></option>
+            </select>
+
+            <button type="submit">Сохранить</button>
+        </form>
+    </div>
+</section>
+<div th:replace="~{commons :: footer}"></div>
 </body>
 </html>

@@ -43,8 +43,6 @@ public class DictionaryTypeController {
         } else {
             model.addAttribute("entity", service.read(id));
         }
-
-
         return THYMELEAF_TEMPLATE_EDIT_PAGE;
     }
 
@@ -52,14 +50,12 @@ public class DictionaryTypeController {
     public String save(@ModelAttribute DictionaryType entity, RedirectAttributes ra) {
         if (entity.getId() == null) {
             try {
-                DictionaryType createdEntity = service.create(entity);
+                service.create(entity);
                 ra.addFlashAttribute(MESSAGE, "Creating is successful");
-                return REDIRECT_TO_ALL_ITEMS + "/" + createdEntity.getId();
             } catch (Exception e) {
                 ra.addFlashAttribute(MESSAGE, "Creating failed");
                 e.printStackTrace();
             }
-            return REDIRECT_TO_ALL_ITEMS;
         } else {
             try {
                 service.update(entity.getId(), entity);
@@ -68,8 +64,8 @@ public class DictionaryTypeController {
                 e.printStackTrace();
                 ra.addFlashAttribute(MESSAGE, "Editing failed");
             }
-            return REDIRECT_TO_ALL_ITEMS + "/" + entity.getId();
         }
+        return REDIRECT_TO_ALL_ITEMS;
     }
 
     @GetMapping("/{id}/delete")

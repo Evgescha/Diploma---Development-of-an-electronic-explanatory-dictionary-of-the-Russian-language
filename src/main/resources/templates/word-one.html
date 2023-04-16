@@ -1,43 +1,41 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru">
 <head>
-    <title>View Word</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Описание слова</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<h1>Word Details</h1>
-<h3 th:if="${message!=null}" th:text="${message}">Message</h3>
-<table>
-        <tr>
-        <th>name:</th>
-                <td th:text="${entity.name}"></td>
-            </tr>
-        <tr>
-        <th>description:</th>
-                <td th:text="${entity.description}"></td>
-            </tr>
-        <tr>
-        <th>dictionary:</th>
-                <td th:text="${entity.dictionary}"></td>
-            </tr>
-        <tr>
-        <th>comments:</th>
-                <td>
-            <ul>
-                <li th:each="comments_item : ${entity.comments}" th:text="${comments_item}"></li>
-            </ul>
-        </td>
-            </tr>
-    
+<div th:replace="~{commons :: header}"></div>
 
-</table>
-<br>
-<a th:href="@{/word}">Back to the List</a>
-<a th:href="@{/word/edit/{id}(id=${entity.id})}">Edit</a>
-<form th:if="${entity.id!=null}" method="get"
-         th:action="'/word/'
-               + ${entity.id} + '/delete'">
-    <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
-</form>
+<section class="word-description-container">
+    <h2 th:text="${entity.name}">Слово</h2>
+    <h4 th:text="'Тип словаря: '+${entity.dictionaryType.name}">Тип словаря для слова</h4>
+    <p th:text="${entity.description}">Описание слова</p>
+</section>
+
+<section class="word-comments-container">
+    <h3>Комментарии</h3>
+    <ul>
+        <li th:each="comment : ${entity.comments}" class="comment-item">
+            <div class="comment-author" th:text="${comment.authorName}">Имя автора</div>
+            <div class="comment-message" th:text="${comment.message}">Комментарий</div>
+        </li>
+    </ul>
+</section>
+
+<section class="add-comment-container word-comments-container">
+    <h3>Добавить комментарий</h3>
+    <form th:action="'/comment/word/'+${entity.id}" method="post">
+        <label for="authorName">Имя автора:</label>
+        <input type="text" id="authorName" name="authorName" required>
+        <label for="message">Комментарий:</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+        <button type="submit">Добавить комментарий</button>
+    </form>
+</section>
+
+<div th:replace="~{commons :: footer}"></div>
 </body>
 </html>

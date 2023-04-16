@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результаты поиска - Электронный толковый словарь</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<div th:replace="~{commons :: header}"></div>
+
+<section class="search-container">
+    <h2>Поиск слова</h2>
+    <form action="/word/search" method="post">
+        <input type="text" id="search" name="name" placeholder="Введите слово..." required>
+        <button type="submit">Искать</button>
+    </form>
+</section>
+<section class="results-container">
+    <h2>Результаты поиска</h2>
+    <ul id="results">
+        <li th:if="${list != null}" th:each="entity:${list}">
+            <h3 th:text="'Слово: '+${entity.name}">Пример</h3>
+            <h4 th:text="'Тип словаря: '+${entity.dictionaryType.name}">Тип словаря: тип</h4>
+            <p th:text="'Толкование: '+${entity.description}">Толкование: Это пример толкования слова.</p>
+            <a th:href="'/word/'+${entity.id}" class="link">Подробнее</a>
+            <hr/>
+        </li>
+        <li th:if="${list == null}">
+            <h3>Слово: Пример</h3>
+            <h4>Тип словаря: тип</h4>
+            <p>Толкование: Это пример толкования слова.</p>
+            <a href="/search" class="link">Подробнее</a>
+            <hr/>
+        </li>
+    </ul>
+</section>
+
+<div th:replace="~{commons :: footer}"></div>
+</body>
+</html>

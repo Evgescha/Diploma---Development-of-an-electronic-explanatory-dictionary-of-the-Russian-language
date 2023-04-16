@@ -1,0 +1,21 @@
+<div th:fragment="header">
+    <header>
+        <h1>Электронный толковый словарь</h1>
+    </header>
+    <section>
+        <ul class="menu">
+            <li><a href="/" class="menu-item">Главная</a></li>
+            <li><a href="/search" class="menu-item">Поиск</a></li>
+            <li><a href="/about" class="menu-item">О сайте</a></li>
+            <li><a href="/dictionarytype" class="menu-item" th:if="${#request.userPrincipal != null}">Тип словарей</a></li>
+            <li><a href="/logout" class="btn btn-signin mx-1" th:if="${#request.userPrincipal != null}">Выйти</a></li>
+        </ul>
+    </section>
+    <hr />
+</div>
+
+
+
+<footer th:fragment="footer">
+    <p>&copy; 2023 - Электронный толковый словарь</p>
+</footer>

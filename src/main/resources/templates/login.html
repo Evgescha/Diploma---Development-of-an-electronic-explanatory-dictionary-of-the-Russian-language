@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница входа</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div th:replace="~{commons :: header}"></div>
+<section class="add-word-container search-container">
+    <h3 th:if="${#request.getParameter('error') != null and #request.getParameter('error') == 'true'}" class="text-center"></h3>
+    <h2>Вход в аккаунт администратора</h2>
+    <form action="/login" method="post">
+        <label for="username">Логин:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Пароль:</label>
+        <input type="password" name="password" id="password" required>
+
+        <button type="submit">Войти</button>
+    </form>
+</section>
+<div th:replace="~{commons :: footer}"></div>
+</body>
+</html>

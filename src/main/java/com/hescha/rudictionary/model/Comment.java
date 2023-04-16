@@ -12,4 +12,13 @@ public class Comment extends AbstractEntity {
     private String message;
     @ManyToOne
     private Word word;
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "authorName='" + authorName + '\'' +
+                ", message='" + message + '\'' +
+                ", word=" + word.getName() +
+                '}';
+    }
 }

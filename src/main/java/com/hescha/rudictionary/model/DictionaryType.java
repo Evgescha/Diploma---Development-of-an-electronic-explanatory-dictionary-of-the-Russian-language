@@ -2,10 +2,16 @@ package com.hescha.rudictionary.model;
 
 import lombok.Data;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
 public class DictionaryType extends AbstractEntity{
     private String name;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "dictionaryType")
+    private List<Word> words = new ArrayList<>();
 }

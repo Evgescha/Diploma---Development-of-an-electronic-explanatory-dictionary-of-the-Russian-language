@@ -1,14 +1,23 @@
 package com.hescha.rudictionary.controller;
 
+import com.hescha.rudictionary.model.Comment;
+import com.hescha.rudictionary.model.DictionaryType;
 import com.hescha.rudictionary.model.Word;
 import com.hescha.rudictionary.service.CommentService;
-import com.hescha.rudictionary.service.DictionaryService;
+import com.hescha.rudictionary.service.DictionaryTypeService;
 import com.hescha.rudictionary.service.WordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
@@ -24,20 +33,30 @@ public class WordController {
     public static final String REDIRECT_TO_ALL_ITEMS = "redirect:" + CURRENT_ADDRESS;
 
     private final WordService service;
-
-    private final DictionaryService dictionaryService;
+    private final DictionaryTypeService dictionaryTypeService;
     private final CommentService commentService;
 
     @GetMapping
-    public String readAll(Model model) {
-        model.addAttribute("list", service.readAll());
+    public String readAll(@RequestParam(name = "page", defaultValue = "0") int page,
+                          @RequestParam(name = "size", defaultValue = "5") int size,
+                          Model model) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        Page<Word> wordsPage = service.readAll(pageable);
+        model.addAttribute("list", wordsPage.getContent());
+        model.addAttribute("page", wordsPage);
         return THYMELEAF_TEMPLATE_ALL_ITEMS_PAGE;
     }
+
 
     @GetMapping("/{id}")
     public String read(@PathVariable("id") Long id, Model model) {
         model.addAttribute("entity", service.read(id));
         return THYMELEAF_TEMPLATE_ONE_ITEM_PAGE;
+    }
+    @PostMapping("/search")
+    public String read(@RequestParam String name, Model model) {
+        model.addAttribute("list", service.findByNameContains(name));
+        return "search_result";
     }
 
     @GetMapping(path = {"/edit", "/edit/{id}"})
@@ -47,10 +66,7 @@ public class WordController {
         } else {
             model.addAttribute("entity", service.read(id));
         }
-
-        model.addAttribute("dictionary_list", dictionaryService.readAll());
-        model.addAttribute("comment_list", commentService.readAll());
-
+        model.addAttribute("dictionary_list",dictionaryTypeService.readAll());
         return THYMELEAF_TEMPLATE_EDIT_PAGE;
     }
 

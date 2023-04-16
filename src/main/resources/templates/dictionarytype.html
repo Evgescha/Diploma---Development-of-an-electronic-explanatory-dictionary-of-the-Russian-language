@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>List of DictionaryType</title>
+    <title>Тип словарей</title>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<h1>List of DictionaryType</h1>
-<h3 th:if="${message != null}" th:text="${message}">Message</h3>
-<a th:href="@{/dictionaryType/edit}">Create new DictionaryType</a>
-<table>
-    <thead>
-    <tr>
-        <th>name</th>
-
-        <th>Action</th>
-    </tr>
-    </thead>
-    <tbody>
+<div th:replace="~{commons :: header}"></div>
+<div class="dictionary-type-container">
+    <h1>Список типов словарей</h1>
+    <h3 th:if="${message != null}" th:text="${message}">Message</h3>
+    <a class="create-dictionary-type" th:href="@{/dictionarytype/edit}">Создать новый тип</a>
+    <table>
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Действие</th>
+        </tr>
+        </thead>
+        <tbody>
         <tr th:each="entity : ${list}">
-                                    <td th:text=${entity.name}></td>
-                
-        <td>
-            <a th:href="@{/dictionaryType/{id}(id=${entity.id})}">See detail</a>
-            <a th:href="@{/dictionaryType/edit/{id}(id=${entity.id})}">Edit</a>
-            <form th:if="${entity.id!=null}" method="get"
-                  th:action="'/dictionaryType/'
-                  +${entity.id}+'/delete'">
-                <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+            <td th:text=${entity.name}></td>
+            <td style="display: flex">
+                <a class="edit-link" th:href="@{/dictionarytype/edit/{id}(id=${entity.id})}">Редактировать</a>
+                <form th:if="${entity.id!=null}" method="get"
+                      th:action="'/dictionarytype/'
+                          +${entity.id}+'/delete'">
+                    <input class="delete-button" type="submit" value="Удалить" onclick="return confirm('Вы уверены?')">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:replace="~{commons :: footer}"></div>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package com.hescha.rudictionary.controller;
 
 import com.hescha.rudictionary.model.Comment;
+import com.hescha.rudictionary.model.Word;
 import com.hescha.rudictionary.service.CommentService;
 import com.hescha.rudictionary.service.WordService;
 import lombok.RequiredArgsConstructor;
@@ -38,41 +39,23 @@ public class CommentController {
         return THYMELEAF_TEMPLATE_ONE_ITEM_PAGE;
     }
 
-    @GetMapping(path = {"/edit", "/edit/{id}"})
-    public String editPage(Model model, @PathVariable(name = "id", required = false) Long id) {
-        if (id == null) {
-            model.addAttribute("entity", new Comment());
-        } else {
-            model.addAttribute("entity", service.read(id));
-        }
-
-        model.addAttribute("word_list", wordService.readAll());
-
-        return THYMELEAF_TEMPLATE_EDIT_PAGE;
-    }
-
-    @PostMapping
-    public String save(@ModelAttribute Comment entity, RedirectAttributes ra) {
-        if (entity.getId() == null) {
+    @PostMapping("/word/{wordId}")
+    public String save(@ModelAttribute Comment entity,
+                       @PathVariable Integer wordId,
+                       RedirectAttributes ra) {
+        Word word = wordService.read(wordId);
             try {
                 Comment createdEntity = service.create(entity);
+                createdEntity.setWord(word);
+                createdEntity = service.update(createdEntity);
+                word.getComments().add(createdEntity);
+                wordService.update(word);
                 ra.addFlashAttribute(MESSAGE, "Creating is successful");
-                return REDIRECT_TO_ALL_ITEMS + "/" + createdEntity.getId();
             } catch (Exception e) {
                 ra.addFlashAttribute(MESSAGE, "Creating failed");
                 e.printStackTrace();
             }
-            return REDIRECT_TO_ALL_ITEMS;
-        } else {
-            try {
-                service.update(entity.getId(), entity);
-                ra.addFlashAttribute(MESSAGE, "Editing is successful");
-            } catch (Exception e) {
-                e.printStackTrace();
-                ra.addFlashAttribute(MESSAGE, "Editing failed");
-            }
-            return REDIRECT_TO_ALL_ITEMS + "/" + entity.getId();
-        }
+        return "redirect:/word/"+wordId;
     }
 
     @GetMapping("/{id}/delete")
