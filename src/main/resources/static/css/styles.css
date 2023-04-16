@@ -324,3 +324,7 @@ button[type="submit"]:hover {
     background-color: #555;
     color: #fff;
 }
+
+textarea{
+    max-width: 100%;
+}

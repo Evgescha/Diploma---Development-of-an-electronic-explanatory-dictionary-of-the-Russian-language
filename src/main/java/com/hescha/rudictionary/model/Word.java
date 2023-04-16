@@ -2,10 +2,7 @@ package com.hescha.rudictionary.model;
 
 import lombok.Data;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +10,7 @@ import java.util.List;
 @Entity
 public class Word extends AbstractEntity {
     private String name;
+    @Column(length = 4000)
     private String description;
     @ManyToOne
     private DictionaryType dictionaryType;

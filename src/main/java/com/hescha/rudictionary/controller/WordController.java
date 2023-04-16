@@ -1,9 +1,7 @@
 package com.hescha.rudictionary.controller;
 
-import com.hescha.rudictionary.model.Comment;
 import com.hescha.rudictionary.model.DictionaryType;
 import com.hescha.rudictionary.model.Word;
-import com.hescha.rudictionary.service.CommentService;
 import com.hescha.rudictionary.service.DictionaryTypeService;
 import com.hescha.rudictionary.service.WordService;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Controller
@@ -34,12 +34,12 @@ public class WordController {
 
     private final WordService service;
     private final DictionaryTypeService dictionaryTypeService;
-    private final CommentService commentService;
 
     @GetMapping
     public String readAll(@RequestParam(name = "page", defaultValue = "0") int page,
                           @RequestParam(name = "size", defaultValue = "5") int size,
                           Model model) {
+        if(page<0)page=0;
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         Page<Word> wordsPage = service.readAll(pageable);
         model.addAttribute("list", wordsPage.getContent());
@@ -53,6 +53,7 @@ public class WordController {
         model.addAttribute("entity", service.read(id));
         return THYMELEAF_TEMPLATE_ONE_ITEM_PAGE;
     }
+
     @PostMapping("/search")
     public String read(@RequestParam String name, Model model) {
         model.addAttribute("list", service.findByNameContains(name));
@@ -66,7 +67,7 @@ public class WordController {
         } else {
             model.addAttribute("entity", service.read(id));
         }
-        model.addAttribute("dictionary_list",dictionaryTypeService.readAll());
+        model.addAttribute("dictionary_list", dictionaryTypeService.readAll());
         return THYMELEAF_TEMPLATE_EDIT_PAGE;
     }
 
@@ -103,6 +104,38 @@ public class WordController {
             e.printStackTrace();
             ra.addFlashAttribute(MESSAGE, "Removing failed");
         }
+        return REDIRECT_TO_ALL_ITEMS;
+    }
+
+    @GetMapping("/addWords")
+    public String addWords(Model model) {
+        model.addAttribute("dictionary_list", dictionaryTypeService.readAll());
+        return "word-add";
+    }
+
+    @PostMapping("/addWords")
+    public String addManyWords(@RequestParam("id") Long id,
+                               @RequestParam("text") String text) {
+
+        Pattern pattern = Pattern.compile("^\\p{Lu}", Pattern.MULTILINE);
+        Map<String, String> wordDescriptions =  Stream.of(text.split("\\n"))
+                .filter(line -> pattern.matcher(line).find())
+                .map(line -> line.split("\\s+", 2))
+                .collect(Collectors.toMap(
+                        parts -> parts[0],
+                        parts -> parts.length > 1 ? parts[1] : ""));
+
+        wordDescriptions.forEach((word, description) -> {
+            DictionaryType dictionaryType = dictionaryTypeService.read(id);
+                Word entity = new Word();
+                entity.setName(word.trim());
+                entity.setDescription(description);
+                entity.setDictionaryType(dictionaryType);
+                Word word1 = service.create(entity);
+                dictionaryType.getWords().add(word1);
+                dictionaryTypeService.update(dictionaryType);
+        });
+
         return REDIRECT_TO_ALL_ITEMS;
     }
 }

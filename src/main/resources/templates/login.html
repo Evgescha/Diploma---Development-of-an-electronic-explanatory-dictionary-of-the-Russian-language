@@ -9,7 +9,8 @@
 <body>
 <div th:replace="~{commons :: header}"></div>
 <section class="add-word-container search-container">
-    <h3 th:if="${#request.getParameter('error') != null and #request.getParameter('error') == 'true'}" class="text-center"></h3>
+    <h3 th:if="${#request.getParameter('error') != null and #request.getParameter('error') == 'true'}"
+        class="text-center"></h3>
     <h2>Вход в аккаунт администратора</h2>
     <form action="/login" method="post">
         <label for="username">Логин:</label>

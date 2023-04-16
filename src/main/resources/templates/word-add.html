@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление списка слов</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div th:replace="~{commons :: header}"></div>
+<section>
+    <div class="add-word-container">
+        <h1>Добавление списка слов</h1>
+        <div class="container mt-5">
+            <form action="/word/addWords" method="POST">
+                <div>Добавить в словарь:
+                    <select name="id">
+                        <option th:each="dictionary:${dictionary_list}" th:text="${dictionary.name}"
+                                th:value="${dictionary.id}"></option>
+                    </select>
+                </div>
+                <div>Слова и их описание<br>
+                    <textarea name="text" cols="180" rows="10" required></textarea>
+                </div>
+                <input type="submit">
+            </form>
+        </div>
+    </div>
+</section>
+<div th:replace="~{commons :: footer}"></div>
+</body>
+</html>

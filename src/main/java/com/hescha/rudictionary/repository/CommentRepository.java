@@ -9,13 +9,4 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findByAuthorName(String authorName);
-
-    List<Comment> findByAuthorNameContains(String authorName);
-
-    List<Comment> findByMessage(String message);
-
-    List<Comment> findByMessageContains(String message);
-
-    Comment findByWord(Word word);
 }

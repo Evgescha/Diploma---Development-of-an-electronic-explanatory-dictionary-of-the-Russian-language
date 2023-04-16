@@ -16,15 +16,6 @@ public class DictionaryTypeService extends CrudService<DictionaryType> {
         this.repository = repository;
     }
 
-    public List<DictionaryType> findByName(String name) {
-        return repository.findByName(name);
-    }
-
-    public List<DictionaryType> findByNameContains(String name) {
-        return repository.findByNameContains(name);
-    }
-
-
     public DictionaryType update(Long id, DictionaryType entity) {
         DictionaryType read = read(id);
         if (read == null) {

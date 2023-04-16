@@ -8,7 +8,4 @@ import java.util.List;
 
 @Repository
 public interface DictionaryTypeRepository extends JpaRepository<DictionaryType, Long> {
-    List<DictionaryType> findByName(String name);
-
-    List<DictionaryType> findByNameContains(String name);
 }

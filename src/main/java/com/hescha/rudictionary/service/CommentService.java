@@ -17,27 +17,6 @@ public class CommentService extends CrudService<Comment> {
         this.repository = repository;
     }
 
-    public List<Comment> findByAuthorName(String authorName) {
-        return repository.findByAuthorName(authorName);
-    }
-
-    public List<Comment> findByAuthorNameContains(String authorName) {
-        return repository.findByAuthorNameContains(authorName);
-    }
-
-    public List<Comment> findByMessage(String message) {
-        return repository.findByMessage(message);
-    }
-
-    public List<Comment> findByMessageContains(String message) {
-        return repository.findByMessageContains(message);
-    }
-
-    public Comment findByWord(Word word) {
-        return repository.findByWord(word);
-    }
-
-
     public Comment update(Long id, Comment entity) {
         Comment read = read(id);
         if (read == null) {
@@ -45,7 +24,6 @@ public class CommentService extends CrudService<Comment> {
         }
         updateFields(entity, read);
         return update(read);
-
     }
 
     private void updateFields(Comment entity, Comment read) {

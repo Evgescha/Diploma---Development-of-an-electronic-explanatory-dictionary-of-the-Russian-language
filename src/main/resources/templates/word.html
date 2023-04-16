@@ -13,7 +13,10 @@
 <section>
     <div class="words-container">
         <h1>Список слов</h1>
-        <a class="add-word-button" th:href="@{/word/edit}" th:if="${#request.userPrincipal != null}">Добавить новое слово</a>
+        <a class="add-word-button" th:href="@{/word/edit}" th:if="${#request.userPrincipal != null}">Добавить новое
+            слово</a>
+        <a class="add-word-button" href="/word/addWords" th:if="${#request.userPrincipal != null}">Добавить список
+            слов</a>
         <table>
             <thead>
             <tr>
@@ -50,10 +53,10 @@
                 <li class="page-item" th:classappend="${!page.hasPrevious() ? 'disabled' : ''}">
                     <a class="page-link" th:href="'word?page='+${page.number - 1}+'&size='+${page.size}" tabindex="-1">Предыдущая</a>
                 </li>
-                <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, page.totalPages - 1)}"
-                    th:classappend="${pageNum == page.number ? 'active' : ''}">
-                    <a class="page-link" th:href="'word?page='+${pageNum}+'&size='+${page.size}"
-                       th:text="${pageNum + 1}">Page number</a>
+                <li class="page-item"
+                    classappend="active">
+                    <a class="page-link" th:href="'word?page='+${page.number}+'&size='+${page.size}"
+                       th:text="${page.number + 1}">Page number</a>
                 </li>
                 <li class="page-item" th:classappend="${!page.hasNext() ? 'disabled' : ''}">
                     <a class="page-link" th:href="'word?page='+${page.number + 1}+'&size='+${page.size}">Следующая</a>
@@ -64,11 +67,8 @@
                 </li>
             </ul>
         </nav>
-
-
     </div>
 </section>
-
 
 <div th:replace="~{commons :: footer}"></div>
 </body>
