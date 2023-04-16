@@ -31,10 +31,10 @@
                 <td th:text="${entity.name}"></td>
                 <td th:text="${entity.description.length() > 20 ? entity.description.substring(0, 20) + '...' : entity.description}"></td>
                 <td th:text="${entity.dictionaryType.name}"></td>
-                <td style="display: flex" th:if="${#request.userPrincipal != null}">
+                <td style="display: flex">
                     <a class="detail-link" th:href="@{/word/{id}(id=${entity.id})}">Подробности</a>
-                    <a class="edit-link" th:href="@{/word/edit/{id}(id=${entity.id})}">Редактировать</a>
-                    <form th:if="${entity.id!=null}" method="get"
+                    <a class="edit-link" th:href="@{/word/edit/{id}(id=${entity.id})}" th:if="${#request.userPrincipal != null}">Редактировать</a>
+                    <form  th:if="${#request.userPrincipal != null}" method="get"
                           th:action="'/word/'
                           +${entity.id}+'/delete'">
                         <input class="delete-button" type="submit" value="Удалить"
