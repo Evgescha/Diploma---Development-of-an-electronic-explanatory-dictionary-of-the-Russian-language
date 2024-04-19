@@ -1,0 +1,43 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class COMMENT {
+   AUTHOR_NAME: character varying(255)
+   MESSAGE: character varying(255)
+   WORD_ID: bigint
+   ID: bigint
+}
+class DICTIONARY {
+   DICTIONARY_TYPE_ID: bigint
+   ID: bigint
+}
+class DICTIONARY_TYPE {
+   NAME: character varying(255)
+   ID: bigint
+}
+class DICTIONARY_WORDS {
+   DICTIONARY_ID: bigint
+   WORDS_ID: bigint
+}
+class WORD {
+   DESCRIPTION: character varying(255)
+   NAME: character varying(255)
+   DICTIONARY_ID: bigint
+   ID: bigint
+}
+class WORD_COMMENTS {
+   WORD_ID: bigint
+   COMMENTS_ID: bigint
+}
+
+COMMENT           -[#595959,plain]-^  WORD             : "WORD_ID:ID"
+DICTIONARY        -[#595959,plain]-^  DICTIONARY_TYPE  : "DICTIONARY_TYPE_ID:ID"
+DICTIONARY_WORDS  -[#595959,plain]-^  DICTIONARY       : "DICTIONARY_ID:ID"
+DICTIONARY_WORDS  -[#595959,plain]-^  WORD             : "WORDS_ID:ID"
+WORD              -[#595959,plain]-^  DICTIONARY       : "DICTIONARY_ID:ID"
+WORD_COMMENTS     -[#595959,plain]-^  COMMENT          : "COMMENTS_ID:ID"
+WORD_COMMENTS     -[#595959,plain]-^  WORD             : "WORD_ID:ID"
+@enduml

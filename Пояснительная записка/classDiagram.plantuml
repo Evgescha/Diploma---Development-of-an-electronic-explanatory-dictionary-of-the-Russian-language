@@ -1,0 +1,33 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class AbstractEntity
+class BeansConfig
+class Comment
+class CommentController
+interface CommentRepository << interface >>
+class CommentService
+class CrudService<Entity>
+class DictionaryType
+class DictionaryTypeController
+interface DictionaryTypeRepository << interface >>
+class DictionaryTypeService
+class IndexController
+class RuDictionaryApplication
+class SecurityConfig
+class Word
+class WordController
+interface WordRepository << interface >>
+class WordService
+
+Comment                   -[#000082,plain]-^  AbstractEntity           
+CommentService            -[#000082,plain]-^  CrudService              
+CrudService               -[#595959,dashed]->  AbstractEntity           
+DictionaryType            -[#000082,plain]-^  AbstractEntity           
+DictionaryTypeService     -[#000082,plain]-^  CrudService              
+Word                      -[#000082,plain]-^  AbstractEntity           
+WordService               -[#000082,plain]-^  CrudService              
+@enduml
